@@ -5,6 +5,7 @@ using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.iOS;
 using Xamarin.UITest.Queries;
+using WordPressClient;
 
 namespace ClientTestApp.UITests
 {
@@ -26,6 +27,16 @@ namespace ClientTestApp.UITests
 			app.Screenshot("First screen.");
 
 			Assert.IsTrue(results.Any());
+		}
+
+		[Test]
+		public async void GetPosts()
+		{
+			var client = new WordPressClient.WordPressClient("http://redgracemedia.com");
+			var task = client.GetPosts();
+			var posts = await task;
+
+			Assert.GreaterOrEqual(posts.Count, 1, "Not enough posts returned by the website.");
 		}
 	}
 }

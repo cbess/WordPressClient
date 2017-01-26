@@ -14,13 +14,16 @@ namespace ClientTestApp
 		public override void ViewDidLoad()
 		{
 			base.ViewDidLoad();
-			// Perform any additional setup after loading the view, typically from a nib.
+
+			actionButton.TouchUpInside += (sender, e) => actionPressed();
 		}
 
-		public override void DidReceiveMemoryWarning()
+		public async void actionPressed()
 		{
-			base.DidReceiveMemoryWarning();
-			// Release any cached data, images, etc that aren't in use.
+			var client = new WordPressClient.WordPressClient("http://redgracemedia.com");
+			var task = client.GetPosts();
+			var posts = await task;
+			var count = posts.Count;
 		}
 	}
 }
