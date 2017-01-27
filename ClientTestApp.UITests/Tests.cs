@@ -32,7 +32,7 @@ namespace ClientTestApp.UITests
 		[Test]
 		public async void GetPosts()
 		{
-			var client = new WordPressClient.WordPressClient("http://redgracemedia.com");
+			var client = new WordPressClient.WordPressClient("http://demo.wp-api.org");
 			var task = client.GetPosts();
 			var posts = await task;
 

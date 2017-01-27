@@ -9,10 +9,13 @@ namespace WordPressClient
 	public class Post
 	{
 		[JsonProperty("id")]
-		public Int64 Id { get; set; }
+		public Int64 Id { get; private set; }
 
 		[JsonProperty("link")]
-		public string Link { get; set; }
+		public string Link { get; private set; }
+
+		[JsonProperty("date")]
+		public DateTime PublishDate { get; private set; }
 
 		[JsonIgnore]
 		public string Title
@@ -32,8 +35,14 @@ namespace WordPressClient
 			get { return GetRenderedString("excerpt"); }
 		}
 
+		[JsonIgnore]
+		public string FeaturedMediaUrl
+		{
+			get { return (string)AdditionalData["_links"]["wp:featuredmedia"][0]["href"]; }
+		}
+
 		[JsonExtensionData]
-		private IDictionary<string, JToken> AdditionalData { get; set; }
+		public IDictionary<string, JToken> AdditionalData { get; private set; }
 
 		/// <summary>
 		/// Gets the rendered string from the AdditionalData.
@@ -42,8 +51,7 @@ namespace WordPressClient
 		/// <param name="field">Field name.</param>
 		private string GetRenderedString(string field)
 		{
-			var excerptData = AdditionalData[field] as IDictionary<string, JToken>;
-			return (string)excerptData["rendered"];
+			return (string)AdditionalData[field]["rendered"];
 		}
 	}
 }

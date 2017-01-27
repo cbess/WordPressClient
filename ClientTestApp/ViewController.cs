@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 using UIKit;
 
@@ -21,9 +22,10 @@ namespace ClientTestApp
 		public async void actionPressed()
 		{
 			var client = new WordPressClient.WordPressClient("http://redgracemedia.com");
-			var task = client.GetPosts();
-			var posts = await task;
-			var count = posts.Count;
+			var posts = await client.GetPosts();
+			var post = posts[0];
+
+			Debug.WriteLine("Done");
 		}
 	}
 }

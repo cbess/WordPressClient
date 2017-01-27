@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using System.Diagnostics;
 using Newtonsoft.Json;
 
 namespace WordPressClient
@@ -30,19 +32,41 @@ namespace WordPressClient
 		/// Gets the blog posts.
 		/// </summary>
 		/// <returns>The posts.</returns>
-		public async Task<List<Post>> GetPosts()
+		public async Task<List<Post>> GetPosts(int page = 1, int pageSize = 12)
 		{
 			var builder = new UriBuilder(SiteUri);
 			builder.Path = "/wp-json/wp/v2/posts";
 
-			var response = await Client.GetAsync(builder.Uri);
-			if (response.IsSuccessStatusCode)
+			return await GetObjectAsync<List<Post>>(builder.Uri);
+		}
+
+		/// <summary>
+		/// Gets the media info for the specified Post.
+		/// </summary>
+		/// <returns>The media information.</returns>
+		/// <param name="post">Post</param>
+		public async Task<Media> GetMedia(Post post)
+		{
+			return await GetObjectAsync<Media>(new Uri(post.FeaturedMediaUrl));
+		}
+
+		private async Task<T> GetObjectAsync<T>(Uri uri)
+		{
+			try
 			{
-				var content = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<List<Post>>(content);
+				var response = await Client.GetAsync(uri);
+				if (response.IsSuccessStatusCode)
+				{
+					var content = await response.Content.ReadAsStringAsync();
+					return JsonConvert.DeserializeObject<T>(content);
+				}
+			}
+			catch (WebException ex)
+			{
+				Debug.WriteLine("Error: " + ex.Message);
 			}
 
-			return null;
+			return default(T);
 		}
 	}
 }
