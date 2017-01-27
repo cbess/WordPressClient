@@ -24,6 +24,7 @@ namespace ClientTestApp
 			var client = new WordPressClient.WordPressClient("http://redgracemedia.com");
 			var posts = await client.GetPosts();
 			var post = posts[0];
+			var media = await client.GetMedia(post);
 
 			Debug.WriteLine("Done");
 		}

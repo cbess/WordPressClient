@@ -9,10 +9,17 @@ namespace WordPressClient
 	public class Media
 	{
 		[JsonProperty("id")]
-		public Int64 Id { get; set; }
+		public Int64 Id { get; private set; }
 
+		[JsonProperty("source_url")]
+		public string SourceUrl { get; private set; }
+
+		/// <summary>
+		/// Gets the full size image URL path.
+		/// </summary>
+		/// <value>The full size URL path.</value>
 		[JsonIgnore]
-		public string Full
+		public string OriginalUrl
 		{
 			get { return (string)AdditionalData["media_details"]["sizes"]["full"]["source_url"]; }
 		}
