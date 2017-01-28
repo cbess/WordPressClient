@@ -21,7 +21,7 @@ namespace ClientTestApp
 
 		public async void actionPressed()
 		{
-			var client = new WordPressClient.WordPressClient("http://redgracemedia.com");
+			var client = new WordPressClient.WordPressClient("http://demo.wp-api.org");
 			var posts = await client.GetPosts();
 			var post = posts[0];
 			var media = await client.GetMedia(post);

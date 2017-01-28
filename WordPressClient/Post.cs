@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -38,7 +39,18 @@ namespace WordPressClient
 		[JsonIgnore]
 		public string FeaturedMediaUrl
 		{
-			get { return (string)AdditionalData["_links"]["wp:featuredmedia"][0]["href"]; }
+			get 
+			{
+				try
+				{
+					return (string)AdditionalData["_links"]["wp:featuredmedia"][0]["href"];
+				}
+				catch (NullReferenceException ex)
+				{
+					Debug.WriteLine(ex.Message);
+					return null;
+				}
+			}
 		}
 
 		[JsonExtensionData]

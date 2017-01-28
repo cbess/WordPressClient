@@ -47,7 +47,13 @@ namespace WordPressClient
 		/// <param name="post">Post</param>
 		public async Task<Media> GetMedia(Post post)
 		{
-			return await GetObjectAsync<Media>(new Uri(post.FeaturedMediaUrl));
+			var url = post.FeaturedMediaUrl;
+			if (url == null)
+			{
+				return null;
+			}
+
+			return await GetObjectAsync<Media>(new Uri(url));
 		}
 
 		private async Task<T> GetObjectAsync<T>(Uri uri)
