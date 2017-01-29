@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -55,6 +56,16 @@ namespace WordPressClient
 
 		[JsonExtensionData]
 		public IDictionary<string, JToken> AdditionalData { get; private set; }
+
+		/// <summary>
+		/// Gets the featured media.
+		/// </summary>
+		/// <returns>The featured media.</returns>
+		public async Task<Media> GetFeaturedMedia()
+		{
+			var client = new WordPressClient();
+			return await client.GetMedia(this);
+		}
 
 		/// <summary>
 		/// Gets the rendered string from the AdditionalData.

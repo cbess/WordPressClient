@@ -19,7 +19,7 @@ namespace WordPressClient
 			// empty
 		}
 
-		public WordPressClient(Uri siteUri)
+		public WordPressClient(Uri siteUri = null)
 		{
 			SiteUri = siteUri;
 			Client = new HttpClient();
@@ -34,6 +34,11 @@ namespace WordPressClient
 		/// <returns>The posts.</returns>
 		public async Task<List<Post>> GetPosts(int page = 1, int pageSize = 12)
 		{
+			if (SiteUri == null)
+			{
+				throw new ArgumentException("SiteUri is needed during class construction.");
+			}
+
 			var builder = new UriBuilder(SiteUri);
 			builder.Path = "/wp-json/wp/v2/posts";
 
