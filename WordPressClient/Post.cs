@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -22,7 +23,11 @@ namespace WordPressClient
 		[JsonIgnore]
 		public string Title
 		{ 
-			get { return GetRenderedString("title"); }
+			get 
+			{
+				var title = GetRenderedString("title");
+				return WebUtility.HtmlDecode(title);
+			}
 		}
 
 		[JsonIgnore]

@@ -31,6 +31,8 @@ namespace WordPressClient
 		/// <summary>
 		/// Gets the blog posts.
 		/// </summary>
+		/// <param name="page">The page number to request. Starts at 1.</param>
+		/// <param name="pageSize">The max items returned for each page requested.</param>
 		/// <returns>The posts.</returns>
 		public async Task<List<Post>> GetPosts(int page = 1, int pageSize = 12)
 		{
@@ -39,8 +41,19 @@ namespace WordPressClient
 				throw new ArgumentException("SiteUri is needed during class construction.");
 			}
 
+			if (page <= 0)
+			{
+				page = 1;
+			}
+
+			if (pageSize <= 0)
+			{
+				pageSize = 12;
+			}
+
 			var builder = new UriBuilder(SiteUri);
 			builder.Path = "/wp-json/wp/v2/posts";
+			builder.Query = $"page={page}&per_page={pageSize}";
 
 			return await GetObjectAsync<List<Post>>(builder.Uri);
 		}
