@@ -6,6 +6,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace WordPressClient
 {
@@ -81,8 +82,12 @@ namespace WordPressClient
 				var response = await Client.GetAsync(uri);
 				if (response.IsSuccessStatusCode)
 				{
-					var content = await response.Content.ReadAsStringAsync();
-					return JsonConvert.DeserializeObject<T>(content);
+					// FIXME: must read as stream to avoid UTF-8 error
+					var stream = await response.Content.ReadAsStreamAsync();
+					using (var reader = new StreamReader(stream))
+					{
+						return JsonConvert.DeserializeObject<T>(reader.ReadToEnd());
+					}
 				}
 			}
 			catch (ArgumentException ex)
