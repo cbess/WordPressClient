@@ -85,6 +85,10 @@ namespace WordPressClient
 					return JsonConvert.DeserializeObject<T>(content);
 				}
 			}
+			catch (ArgumentException ex)
+			{
+				Debug.WriteLine("Arg Error: " + ex.Message);
+			}
 			catch (WebException ex)
 			{
 				Debug.WriteLine("Error: " + ex.Message);
