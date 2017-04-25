@@ -81,5 +81,10 @@ namespace WordPressClient
 		{
 			return (string)AdditionalData[field]["rendered"];
 		}
+
+		public override string ToString()
+		{
+			return string.Format("[Post: Id={0}, Link={1}, PublishDate={2}, Title={3}]", Id, Link, PublishDate, Title);
+		}
 	}
 }
